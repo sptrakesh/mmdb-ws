@@ -17,7 +17,7 @@ Defaults()
 
   if [ -z "$PORT" ]
   then
-    PORT=8000
+    PORT=8010
     echo "PORT not set.  Will default to $PORT"
   fi
 

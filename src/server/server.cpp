@@ -253,7 +253,7 @@ int spt::server::run( util::Configuration::Ptr configuration )
     v.emplace_back( [&ioc] { ioc.run(); });
   }
 
-  LOG_INFO << "HTTP service started";
+  LOG_INFO << "HTTP service started on port " << configuration->port;
   ioc.run();
 
   LOG_INFO << "HTTP service stopping";
