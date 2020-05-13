@@ -21,6 +21,7 @@ int main( int argc, char const * const * argv )
   auto options = clara::Help(help) |
       Opt(config->port, "port")["-p"]["--port"]("Port on which to listen (default 8010)") |
       Opt(config->threads, "threads")["-n"]["--threads"]("Number of server threads to spawn (default system)") |
+      Opt(config->file, "file")["-f"]["--file"]("MMDB file") |
       Opt(console, "console")["-c"]["--console"]("Log to console (default false)") |
       Opt(dir, "dir")["-o"]["--dir"]("Log directory (default logs/)");
 

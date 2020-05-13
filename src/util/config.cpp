@@ -12,6 +12,8 @@ std::string Configuration::str() const
 {
   std::ostringstream ss;
   ss << "{\"port\":" << port <<
-    ", \"threads\":" << threads << '}';
+    ", \"threads\":" << threads <<
+    R"(, "file": ")" << file <<
+    "\"}";
   return ss.str();
 }

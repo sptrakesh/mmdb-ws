@@ -1,4 +1,11 @@
 # DB IP Service
+
+* [Protocol](#protocol)
+* [Warning](#warning)
+* [Pre-requisites](#pre-requisites)
+* [Mac OS X](#mac-os-x)
+* [Acknowledgements](#acknowledgements)
+
 Websocket service for the [dbip](https://www.db-ip.com/db/download/ip-to-city-lite)
 MMDB Lite database.
 
@@ -95,16 +102,27 @@ query_language : en
 subdivision : Oklahoma
 ```
 
+### Location
+You can also retrieve the geo-coordinates (latitude and longitude) for an IP
+address by prefixing the address with `l:`.  The following examples illustrates:
+
+```shell script
+l:184.105.163.155
+
+35.524800,-97.597100
+```
+
 ## Warning
 There is no authentication/authorisation implemented for this service.  The
 assumption is that users will be running this service internally with no public
 exposure.
 
 ## Pre-requisites
-Download the MMDB lite database and place under the `docker` directory.  The
-`Dockerfile` will include the file when building the image.  The docker image
-will contain only one file, so make sure to remove any older files if you have
-them to ensure that the latest file is included in the image.
+Download the MMDB lite database and place under an appropriate directory.  The
+`docker/run.sh` script assumes the `docker` directory.  Mount this file as
+`/opt/spt/data/dbip.mmdb.gz` when running the `docker` container.  The
+`entrypoint` script will decompress the file into the running container and
+use it when running.
 
 ## Mac OS X
 I have not been able to build or test using `libmaxminddb` on Mac OS X.  There seems
@@ -117,7 +135,7 @@ No such issues on Linux obviously, since the docker container works without issu
 ## Acknowledgements
 This software has been developed mainly using work other people have contributed.
 The following are the components used to build this software:
-* **[GeoLite2++](https://www.ccoderun.ca/GeoLite2++/api/usage.html) - C++
+* **[GeoLite2++](https://www.ccoderun.ca/GeoLite2++/api/usage.html)** - C++
 wrapper library to read `mmdb` file via [libmaxminddb](https://github.com/maxmind/libmaxminddb).
 * **[Boost:Beast](https://github.com/boostorg/beast)** - We use *Beast* for the
 `websocket` server implementation.  The implementation is a modified version of the

@@ -1,10 +1,17 @@
 #!/bin/sh
 
 LOGDIR=/opt/spt/logs
+DBFILE=/opt/spt/data/dbip.mmdb
 
 Decompress()
 {
-  gzip -d /opt/spt/data/dbip.mmdb.gz
+  if [ -f /opt/spt/data/dbip.mmdb.gz ]
+  then
+    gzip -dc /opt/spt/data/dbip.mmdb.gz > $DBFILE
+  else
+    echo "DB IP file not found.  Make sure it is mounted for the running container."
+    exit 1
+  fi
 }
 
 Defaults()
@@ -31,7 +38,7 @@ Service()
   fi
 
   echo "Starting up MaxMind DB websocket server"
-  /opt/spt/bin/mmdb-ws -c true -o ${LOGDIR}/ -p $PORT -n $THREADS
+  /opt/spt/bin/mmdb-ws -c true -o ${LOGDIR}/ -p $PORT -n $THREADS -f $DBFILE
 }
 
 Decompress && Defaults && Service

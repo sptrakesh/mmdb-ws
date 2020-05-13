@@ -5,7 +5,6 @@ FROM sptrakesh/boost as base
 COPY --from=mmdb /opt/local /opt/local
 COPY CMakeLists.txt /opt/spt/mmdb-ws/CMakeLists.txt
 COPY src /opt/spt/mmdb-ws/src
-COPY docker/dbip*.gz /tmp/dbip.mmdb.gz
 
 WORKDIR /opt/spt/mmdb-ws/build
 RUN apk add --no-cache libmaxminddb-dev \
@@ -21,7 +20,6 @@ RUN apk add --no-cache libmaxminddb-dev \
 FROM sptrakesh/cppruntime
 
 COPY --from=base /opt/spt/bin /opt/spt/bin
-COPY --from=base /tmp/dbip* /opt/spt/data/
 
 RUN addgroup spt \
   && adduser -DS -g "SPT User" -G spt -s /bin/sh -h /home/spt spt \

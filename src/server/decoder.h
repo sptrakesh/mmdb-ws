@@ -15,21 +15,22 @@ namespace spt::server
   class GeoDecoder
   {
   public:
-    static GeoDecoder& instance()
+    static GeoDecoder& instance( const std::string& file = {} )
     {
-      static GeoDecoder obj;
+      static GeoDecoder obj( file );
       return obj;
     }
 
     std::string lookup( const std::string& ip );
     std::string fields( const std::string& ip );
+    std::string location( const std::string& ip );
 
     ~GeoDecoder() = default;
     GeoDecoder( const GeoDecoder& ) = delete;
     GeoDecoder& operator=( const GeoDecoder& ) = delete;
 
   private:
-    GeoDecoder();
+    GeoDecoder( const std::string& file );
 
 #if !defined(__APPLE__)
     GeoLite2PP::DB db;

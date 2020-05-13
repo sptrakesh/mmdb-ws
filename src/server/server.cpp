@@ -121,6 +121,10 @@ namespace spt::server::internal
           {
             response = GeoDecoder::instance().fields( query.substr( 2 ) );
           }
+          else if ( query[0] == 'l' && query[1] == ':' )
+          {
+            response = GeoDecoder::instance().location( query.substr( 2 ) );
+          }
           else if ( query[0] == 'j' && query[1] == ':' )
           {
             response = GeoDecoder::instance().lookup( query.substr( 2 ) );
@@ -243,6 +247,7 @@ namespace spt::server::internal
 
 int spt::server::run( util::Configuration::Ptr configuration )
 {
+  GeoDecoder::instance( configuration->file );
   auto const address = net::ip::make_address( "0.0.0.0" );
   auto const port = static_cast<unsigned short>( configuration->port );
 

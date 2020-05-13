@@ -5,15 +5,18 @@
 #include "decoder.h"
 #include "log/NanoLog.h"
 
+#if !defined(__APPLE__)
 #include <sstream>
+#endif
 
 using spt::server::GeoDecoder;
 
-GeoDecoder::GeoDecoder()
+GeoDecoder::GeoDecoder( const std::string& file )
 #if !defined(__APPLE__)
-: db( "/opt/spt/data/dbip.mmdb" )
+: db( file )
 #endif
 {
+  LOG_INFO << "Opened database file " << file;
 }
 
 std::string GeoDecoder::lookup( const std::string& ip )
@@ -31,7 +34,7 @@ std::string GeoDecoder::lookup( const std::string& ip )
   return ip;
 }
 
-std::string spt::server::GeoDecoder::fields( const std::string& ip )
+std::string GeoDecoder::fields( const std::string& ip )
 {
 #if !defined(__APPLE__)
   try
@@ -42,6 +45,24 @@ std::string spt::server::GeoDecoder::fields( const std::string& ip )
     {
       oss << key << " : " << value << '\n';
     }
+    return oss.str();
+  }
+  catch ( const std::exception& ex )
+  {
+    LOG_WARN << "Error looking up address: " << ip << ". " << ex.what();
+  }
+#endif
+  return ip;
+}
+
+std::string GeoDecoder::location( const std::string& ip )
+{
+#if !defined(__APPLE__)
+  try
+  {
+    auto map = db.get_all_fields( ip );
+    std::ostringstream oss;
+    oss << map["latitude"] << ',' << map["longitude"];
     return oss.str();
   }
   catch ( const std::exception& ex )

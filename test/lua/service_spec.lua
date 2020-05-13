@@ -44,6 +44,39 @@ describe("Basic tests for mmdb server", function()
     assert(ws:close())
   end)
 
+  it("Retrieve location data", function()
+    local query = "l:184.105.163.155"
+    local ws = websocket.new_from_uri(uri)
+    assert(ws:connect())
+    assert(ws:send(query))
+
+    local data = assert(ws:receive())
+    assert.are_not.equal(query, data)
+    assert.is.truthy(data)
+    assert.is.falsy(string.find(data, "continent"))
+    assert.is.falsy(string.find(data, "country"))
+    assert.is.falsy(string.find(data, "latitude"))
+    assert.is.falsy(string.find(data, "longitude"))
+    assert.is.truthy(string.find(data, ","))
+    log.info(data)
+
+    local function split(s, delimiter)
+      result = {};
+      for match in (s..delimiter):gmatch("(.-)"..delimiter) do
+        table.insert(result, match);
+      end
+      return result;
+    end
+    local function len(t)
+      local count = 0
+      for _ in pairs(t) do count = count + 1 end
+      return count
+    end
+    assert.are.equal(len(split(data, ",")), 2)
+
+    assert(ws:close())
+  end)
+
   it("Retrieve full JSON response for IP address using explicit query", function()
     local query = "j:184.105.163.155"
     local ws = websocket.new_from_uri(uri)
