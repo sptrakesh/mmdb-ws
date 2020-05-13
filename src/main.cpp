@@ -19,11 +19,9 @@ int main( int argc, char const * const * argv )
   bool help = false;
 
   auto options = clara::Help(help) |
-      Opt(config->authKey, "authKey")["-a"]["--auth-key"]("Bearer token to use for rudimentary authorisation") |
       Opt(config->port, "port")["-p"]["--port"]("Port on which to listen (default 8010)") |
       Opt(config->threads, "threads")["-n"]["--threads"]("Number of server threads to spawn (default system)") |
       Opt(console, "console")["-c"]["--console"]("Log to console (default false)") |
-      Opt(config->cacheDir, "cacheDir")["-d"]["--cache-dir"]("Location for local cache (default /tmp)") |
       Opt(dir, "dir")["-o"]["--dir"]("Log directory (default logs/)");
 
   auto result = options.parse(clara::Args(argc, argv));

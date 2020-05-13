@@ -9,12 +9,6 @@ Decompress()
 
 Defaults()
 {
-  if [ -z "$CACHE_DIR" ]
-  then
-    CACHE_DIR="/opt/spt/data"
-    echo "CACHE_DIR not set.  Will default to $CACHE_DIR"
-  fi
-
   if [ -z "$PORT" ]
   then
     PORT=8010
@@ -37,9 +31,7 @@ Service()
   fi
 
   echo "Starting up MaxMind DB websocket server"
-  /opt/spt/bin/mmdb-ws -c true -o ${LOGDIR}/ \
-    -d $CACHE_DIR -p $PORT -n $THREADS \
-    -a "$AUTH_KEY"
+  /opt/spt/bin/mmdb-ws -c true -o ${LOGDIR}/ -p $PORT -n $THREADS
 }
 
 Decompress && Defaults && Service

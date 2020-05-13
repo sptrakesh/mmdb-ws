@@ -145,9 +145,7 @@ namespace spt::server::internal
     tcp::socket socket_;
 
   public:
-    listener(
-        net::io_context& ioc,
-        tcp::endpoint endpoint)
+    listener( net::io_context& ioc, tcp::endpoint endpoint )
         : ioc_(ioc)
         , acceptor_(net::make_strand(ioc))
         , socket_(net::make_strand(ioc))
@@ -155,7 +153,7 @@ namespace spt::server::internal
       beast::error_code ec;
 
       // Open the acceptor
-      acceptor_.open(endpoint.protocol(), ec);
+      acceptor_.open( endpoint.protocol(), ec );
       if (ec)
       {
         fail(ec, "open");
@@ -163,7 +161,7 @@ namespace spt::server::internal
       }
 
       // Allow address reuse
-      acceptor_.set_option(net::socket_base::reuse_address(true), ec);
+      acceptor_.set_option( net::socket_base::reuse_address(true), ec );
       if (ec)
       {
         fail(ec, "set_option");
@@ -171,7 +169,7 @@ namespace spt::server::internal
       }
 
       // Bind to the server address
-      acceptor_.bind(endpoint, ec);
+      acceptor_.bind( endpoint, ec );
       if (ec)
       {
         fail(ec, "bind");
@@ -179,8 +177,7 @@ namespace spt::server::internal
       }
 
       // Start listening for connections
-      acceptor_.listen(
-          net::socket_base::max_listen_connections, ec);
+      acceptor_.listen( net::socket_base::max_listen_connections, ec );
       if (ec)
       {
         fail(ec, "listen");
@@ -207,10 +204,8 @@ namespace spt::server::internal
         {
           yield acceptor_.async_accept(
               socket_,
-              std::bind(
-                  &listener::loop,
-                  shared_from_this(),
-                  std::placeholders::_1));
+              std::bind( &listener::loop, shared_from_this(), std::placeholders::_1 )
+              );
           if (ec)
           {
             fail(ec, "accept");

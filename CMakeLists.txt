@@ -38,15 +38,16 @@ if (NOT CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Werror")
 endif()
 
-include_directories(
-  /opt/local/include
-)
-link_directories(
-  /opt/local/lib
-)
 
 if (APPLE)
   set(CMAKE_MACOSX_RPATH 1)
+else()
+  include_directories(
+    /opt/local/include
+  )
+  link_directories(
+    /opt/local/lib
+  )
 endif()
 
 SET(CMAKE_INSTALL_PREFIX /opt/spt)

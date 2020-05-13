@@ -14,8 +14,6 @@ namespace spt::util
   {
     using Ptr = std::shared_ptr<Configuration>;
 
-    std::string authKey;
-    std::string cacheDir{ "/tmp" };
     int port = 8010;
     int threads = std::thread::hardware_concurrency();
 

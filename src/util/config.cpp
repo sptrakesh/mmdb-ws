@@ -11,8 +11,7 @@ using spt::util::Configuration;
 std::string Configuration::str() const
 {
   std::ostringstream ss;
-  ss << "{\"cacheDir\":" << cacheDir <<
-    ", \"port\":" << port <<
-    ", \"threads\":" << threads;
+  ss << "{\"port\":" << port <<
+    ", \"threads\":" << threads << '}';
   return ss.str();
 }
