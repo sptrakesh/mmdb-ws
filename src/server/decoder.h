@@ -22,6 +22,7 @@ namespace spt::server
     }
 
     std::string lookup( const std::string& ip );
+    std::string fields( const std::string& ip );
 
     ~GeoDecoder() = default;
     GeoDecoder( const GeoDecoder& ) = delete;

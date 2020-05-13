@@ -2,6 +2,99 @@
 Websocket service for the [dbip](https://www.db-ip.com/db/download/ip-to-city-lite)
 MMDB Lite database.
 
+## Protocol
+Simplest use is to send the IP address for which you want details to the service,
+and if it is a valid IP address, you will receive a JSON response with all the
+details.
+
+The following example shows a request IP address and the response:
+```shell script
+184.105.163.155
+```
+
+```json
+
+{
+    "city" : 
+    {
+        "names" : 
+        {
+            "en" : "Oklahoma City (Central Oklahoma City)"
+        }
+    },
+    "continent" : 
+    {
+        "code" : "NA",
+        "geoname_id" : 6255149,
+        "names" : 
+        {
+            "de" : "Nordamerika",
+            "en" : "North America",
+            "es" : "Norteamérica",
+            "fa" : " امریکای شمالی",
+            "fr" : "Amérique Du Nord",
+            "ja" : "北アメリカ大陸",
+            "ko" : "북아메리카",
+            "pt-BR" : "América Do Norte",
+            "ru" : "Северная Америка",
+            "zh-CN" : "北美洲"
+        }
+    },
+    "country" : 
+    {
+        "geoname_id" : 6252001,
+        "is_in_european_union" : false,
+        "iso_code" : "US",
+        "names" : 
+        {
+            "de" : "Vereinigte Staaten von Amerika",
+            "en" : "United States",
+            "es" : "Estados Unidos de América (los)",
+            "fa" : "ایالات متحدهٔ امریکا",
+            "fr" : "États-Unis",
+            "ja" : "アメリカ合衆国",
+            "ko" : "미국",
+            "pt-BR" : "Estados Unidos",
+            "ru" : "США",
+            "zh-CN" : "美国"
+        }
+    },
+    "location" : 
+    {
+        "latitude" : 35.5248,
+        "longitude" : -97.5971
+    },
+    "subdivisions" : 
+    [
+        
+        {
+            "names" : 
+            {
+                "en" : "Oklahoma"
+            }
+        }
+    ]
+}
+```
+
+### Fields
+If you prefer a simpler listing of *field : value* pairs, prefix the IP address
+with `f:`.  The following example shows the same request as above:
+
+```shell script
+f:184.105.163.155
+
+city : Oklahoma City (Central Oklahoma City)
+continent : North America
+country : United States
+country_iso_code : US
+latitude : 35.524800
+longitude : -97.597100
+query_ip_address : 184.105.163.155
+query_language : en
+subdivision : Oklahoma
+```
+
 ## Warning
 There is no authentication/authorisation implemented for this service.  The
 assumption is that users will be running this service internally with no public

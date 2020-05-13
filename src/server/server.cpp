@@ -113,7 +113,22 @@ namespace spt::server::internal
           if (ec) fail(ec, "read");
 
           query = beast::buffers_to_string( buffer_.data() );
-          response = GeoDecoder::instance().lookup( query );
+          if ( query.size() < 2 )
+          {
+            response = query;
+          }
+          else if ( query[0] == 'f' && query[1] == ':' )
+          {
+            response = GeoDecoder::instance().fields( query.substr( 2 ) );
+          }
+          else if ( query[0] == 'j' && query[1] == ':' )
+          {
+            response = GeoDecoder::instance().lookup( query.substr( 2 ) );
+          }
+          else
+          {
+            response = GeoDecoder::instance().lookup( query );
+          }
           ws_.text(ws_.got_text());
           yield ws_.async_write(
               boost::asio::buffer( response ),
