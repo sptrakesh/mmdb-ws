@@ -3,6 +3,8 @@
 * [Protocol](#protocol)
 * [Warning](#warning)
 * [Pre-requisites](#pre-requisites)
+* [Testing](#testing)
+    * [Performance](#performance)
 * [Mac OS X](#mac-os-x)
 * [Acknowledgements](#acknowledgements)
 
@@ -124,6 +126,41 @@ Download the MMDB lite database and place under an appropriate directory.  The
 `entrypoint` script will decompress the file into the running container and
 use it when running.
 
+## Testing
+[Integration](test/lua/README.md) test suite in Lua.  Tests basic requests
+and responses.
+
+### Performance
+[Performance](test/performance/websocket.cpp) test suite using
+[hayai](https://github.com/nickbruun/hayai) and Boost:Beast WebSocket client is
+also available.
+  
+Performance test function sends 4 requests for each IP Address from
+a pre-defined `vector` of 50 addresses.  Thus each test involves 200 websocket
+requests internally.  
+
+Each test runs the test function 10 times (iterations).  Each set of 10 iterations
+is repeated 2 times to get better average numbers (higher repeats like 5 would
+be much better). We then run the performance test with different concurrency values.
+At present the tests are set up to run with 10, 100, 500 and 1000 concurrent
+threads connecting to the service.
+
+Even with 1000 concurrent requests, the docker container rarely consumes above
+25Mb RAM.
+
+| Concurrency | Avg Time per run (us) | Avg Timer per iteration (us) | Avg Iterations per second |
+| :-- | :-: | :-: | :-: |
+| 10 | 8245983.332 | 824598.333 | 1.21271 |
+| 100 | 48174280.958 | 4817428.096 | 0.20758 |
+| 500 | 246399960.709 | 24639996.071 | 0.04058 |
+| 1000 | 435108315.251 | 43510831.525 | 0.02298 |
+
+All these numbers were against a docker container deployed on laptop.  Tests
+were run from IDE.  From previous experience deploying the test as another container
+could yield better results (depending on how much CPU is allocated to the Docker
+daemon).  This is by no means definitive, since I was doing a few other things
+(watching a movie, another script running etc.) while the test was in progress.
+
 ## Mac OS X
 I have not been able to build or test using `libmaxminddb` on Mac OS X.  There seems
 to be some incompatibility (probably some conflicting preprocessor define) with
@@ -144,6 +181,7 @@ example.
 * **[Clara](https://github.com/catchorg/Clara)** - Command line options parser.
 * **[NanoLog](https://github.com/Iyengar111/NanoLog)** - Logging framework used
 for the server.  I modified the implementation for daily rolling log files.
+* **[hayai](https://github.com/nickbruun/hayai)** - Performance testing framework.
 
 In future we will look at [ftrie](https://github.com/trisulnsm/ftrie).  The
 main downside to it is that we need to package the much (`5x`) bigger `csv` file in
