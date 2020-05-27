@@ -8,7 +8,7 @@ if (APPLE)
   )
 else()
   target_link_libraries(mmdb-ws
-    PRIVATE Boost::boost geolite2++ libmaxminddb.a
+    PRIVATE Boost::boost libgeolite2++.a libmaxminddb.a
   )
 endif()
 
