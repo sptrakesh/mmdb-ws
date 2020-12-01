@@ -4,6 +4,7 @@
 
 #include "config.h"
 
+#include <iomanip>
 #include <sstream>
 
 using spt::util::Configuration;
@@ -11,9 +12,11 @@ using spt::util::Configuration;
 std::string Configuration::str() const
 {
   std::ostringstream ss;
-  ss << "{\"port\":" << port <<
-    ", \"threads\":" << threads <<
-    R"(, "file": ")" << file <<
-    "\"}";
+  ss << R"({"tcpPort": )" << tcpport <<
+    R"(, "wsPort": )" << wsport <<
+    R"(, "threads": )" << threads <<
+    R"(, "logLevel": ")" << logLevel <<
+    R"(", "file": )" << std::quoted( file ) <<
+    '}';
   return ss.str();
 }

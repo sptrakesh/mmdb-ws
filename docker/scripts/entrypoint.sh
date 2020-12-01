@@ -16,16 +16,28 @@ Decompress()
 
 Defaults()
 {
-  if [ -z "$PORT" ]
+  if [ -z "$WS_PORT" ]
   then
-    PORT=8010
-    echo "PORT not set.  Will default to $PORT"
+    WS_PORT=8010
+    echo "WS_PORT not set.  Will default to $WS_PORT"
+  fi
+
+  if [ -z "$TCP_PORT" ]
+  then
+    TCP_PORT=2010
+    echo "TCP_PORT not set.  Will default to $TCP_PORT"
   fi
 
   if [ -z "$THREADS" ]
   then
-    THREADS=8
+    THREADS=4
     echo "THREADS not set.  Will default to $THREADS"
+  fi
+
+  if [ -z "$LOG_LEVEL" ]
+  then
+    LOG_LEVEL='info'
+    echo "LOG_LEVEL not set.  Will default to $LOG_LEVEL"
   fi
 }
 
@@ -37,8 +49,11 @@ Service()
     chown spt:spt $LOGDIR
   fi
 
-  echo "Starting up MaxMind DB websocket server"
-  /opt/spt/bin/mmdb-ws -c true -o ${LOGDIR}/ -p $PORT -n $THREADS -f $DBFILE
+  echo "Starting up MaxMind DB tcp and websocket server"
+  /opt/spt/bin/mmdb-ws --console true --dir ${LOGDIR}/ --log-level $LOG_LEVEL \
+    --tcp-port $TCP_PORT \
+    --websocket-port $WS_PORT \
+    --threads $THREADS --file $DBFILE
 }
 
 Decompress && Defaults && Service

@@ -54,6 +54,9 @@ SET(CMAKE_INSTALL_PREFIX /opt/spt)
 
 add_subdirectory(src)
 
-enable_testing()
-add_subdirectory(test/performance)
+
+if (BUILD_TESTING)
+  add_subdirectory(test/integration)
+  add_subdirectory(test/performance)
+endif()
 

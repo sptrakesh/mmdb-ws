@@ -14,10 +14,12 @@ namespace spt::util
   {
     using Ptr = std::shared_ptr<Configuration>;
 
+    std::string logLevel{ "info" };
     std::string file;
-    int port = 8010;
-    int threads = std::thread::hardware_concurrency();
+    int wsport = 8010;
+    int tcpport = 2010;
+    uint16_t threads = std::thread::hardware_concurrency();
 
-    std::string str() const;
+    [[nodiscard]] std::string str() const;
   };
 }

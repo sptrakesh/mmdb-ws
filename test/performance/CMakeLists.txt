@@ -1,6 +1,8 @@
 find_package(hayai REQUIRED)
 
 add_executable(performance
+  pool.h
+  tcp.cpp
   websocket.cpp
 )
 

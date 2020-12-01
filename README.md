@@ -8,7 +8,7 @@
 * [Mac OS X](#mac-os-x)
 * [Acknowledgements](#acknowledgements)
 
-Websocket service for the [dbip](https://www.db-ip.com/db/download/ip-to-city-lite)
+TCP and Websocket service for the [dbip](https://www.db-ip.com/db/download/ip-to-city-lite)
 MMDB Lite database.
 
 ## Protocol
@@ -16,13 +16,17 @@ Simplest use is to send the IP address for which you want details to the service
 and if it is a valid IP address, you will receive a JSON response with all the
 details.
 
+**Note:** For the **TCP** service, finish the `query` with a *single* UNIX newline
+character (`\n`).  The response will be terminated by *two* UNIX newline characters
+(`\n\n`).  Other than this, there is no difference between the **TCP** and
+**Websocket** protocols.
+
 The following example shows a request IP address and the response:
 ```shell script
 184.105.163.155
 ```
 
 ```json
-
 {
     "city" : 
     {
@@ -130,6 +134,8 @@ use it when running.
 [Integration](test/lua/README.md) test suite in Lua.  Tests basic requests
 and responses.
 
+[TCP](test/integration/tcp.cpp) test suite for the TCP service using Boost:Asio.
+
 ### Performance
 [Performance](test/performance/websocket.cpp) test suite using
 [hayai](https://github.com/nickbruun/hayai) and Boost:Beast WebSocket client is
@@ -174,6 +180,8 @@ This software has been developed mainly using work other people have contributed
 The following are the components used to build this software:
 * **[GeoLite2++](https://www.ccoderun.ca/GeoLite2++/api/usage.html)** - C++
 wrapper library to read `mmdb` file via [libmaxminddb](https://github.com/maxmind/libmaxminddb).
+* **[Boost:Asio](https://github.com/boostorg/asio)** - We use *Asio* for the
+`tcp` server implementation.
 * **[Boost:Beast](https://github.com/boostorg/beast)** - We use *Beast* for the
 `websocket` server implementation.  The implementation is a modified version of the
 [stackless](https://github.com/boostorg/beast/tree/develop/example/websocket/server/stackless)

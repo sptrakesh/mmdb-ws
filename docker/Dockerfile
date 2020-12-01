@@ -9,10 +9,6 @@ COPY src /opt/spt/mmdb-ws/src
 WORKDIR /opt/spt/mmdb-ws/build
 RUN apk add --no-cache libmaxminddb-dev \
   && rm -rf * \
-  && (cd ..; sed -i \
-    -e 's/^enable_testing/#enable_testing/g' \
-    -e 's/^add_subdirectory(test/#add_subdirectory(test/g' \
-    CMakeLists.txt) \
   && cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=/opt/local .. \
   && make -j8 \
   && make install
