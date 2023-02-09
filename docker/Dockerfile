@@ -1,5 +1,4 @@
 FROM sptrakesh/mmdb as mmdb
-
 FROM sptrakesh/boost as base
 
 COPY --from=mmdb /opt/local /opt/local
@@ -7,7 +6,7 @@ COPY CMakeLists.txt /opt/spt/mmdb-ws/CMakeLists.txt
 COPY src /opt/spt/mmdb-ws/src
 
 WORKDIR /opt/spt/mmdb-ws/build
-RUN apk add --no-cache libmaxminddb-dev \
+RUN apk add --no-cache libmaxminddb-dev libmaxminddb-static \
   && rm -rf * \
   && cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=/opt/local .. \
   && make -j8 \
